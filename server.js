@@ -21,18 +21,58 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
     useUnifiedTopology: true
 });
 
-
-
-
-app.get("/exercise", function (req, res) {
+app.get("/exercise", (req, res) => {
     res.sendFile(path.join(__dirname, "./public/exercise.html"));
 });
 
-app.get("/stats", function (req, res) {
+app.get("/stats", (req, res) => {
     res.sendFile(path.join(__dirname, "./public/stats.html"));
 });
 
 
+app.get("/api/workouts", (_req, res) => {
+    db.Workout.find({}, (err, data) => {
+        if (err) {
+            console.error(err);
+        } else {
+            res.json(data);
+        }
+    });
+});
+
+// app.put("/api/workouts/:id", (req, res) => {
+//     // Remember: when searching by an id, the id needs to be passed in
+//     // as (mongojs.ObjectId(IdYouWantToFind))
+//     db.Workout.update(
+//       {
+//         _id: mongojs.ObjectId(req.params.id)
+//       },
+//       {
+//         $set: {
+//           read: true
+//         }
+//       },
+//       (err, data) => {
+//         if (err) {
+//           console.error(err);
+//         } else {
+//           res.json(data);
+//         }
+//       }
+
+//     );
+//   });
+
+
+// app.post("/api/workouts", ({ body }, res) => {
+//     db.Workout.create(body)
+//         .then(data => {
+//             res.json(data);
+//         })
+//         .catch(err => {
+//             res.json(err);
+//         });
+// });
 
 
 
