@@ -40,18 +40,20 @@ app.get("/api/workouts", (_req, res) => {
     });
 });
 
-// app.put("/api/workouts/:id", ({ body }, res) => {
-//     // Remember: when searching by an id, the id needs to be passed in
-//     // as (mongojs.ObjectId(IdYouWantToFind))
-//     db.Workout.create(body)
-//         .then(data => {
-//             res.json(data);
-//         })
-//         .catch(err => {
-//             res.json(err);
-//         });
-// });
-
+app.put("/api/workouts/:id", (req, res) => {
+    // Remember: when searching by an id, the id needs to be passed in
+    // as (mongojs.ObjectId(IdYouWantToFind))
+    db.Workout.update({
+        "_id": mongojs.ObjectId(req.params.id)
+    },
+        { $push: { "exercises": req.body } })
+        .then(data => {
+            res.json(data);
+        })
+        .catch(err => {
+            res.json(err);
+        });
+});
 
 // app.post("/api/workouts", ({ body }, res) => {
 //     db.Workout.create(body)
