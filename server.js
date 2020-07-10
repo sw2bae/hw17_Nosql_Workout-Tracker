@@ -40,28 +40,17 @@ app.get("/api/workouts", (_req, res) => {
     });
 });
 
-// app.put("/api/workouts/:id", (req, res) => {
+// app.put("/api/workouts/:id", ({ body }, res) => {
 //     // Remember: when searching by an id, the id needs to be passed in
 //     // as (mongojs.ObjectId(IdYouWantToFind))
-//     db.Workout.update(
-//       {
-//         _id: mongojs.ObjectId(req.params.id)
-//       },
-//       {
-//         $set: {
-//           read: true
-//         }
-//       },
-//       (err, data) => {
-//         if (err) {
-//           console.error(err);
-//         } else {
-//           res.json(data);
-//         }
-//       }
-
-//     );
-//   });
+//     db.Workout.create(body)
+//         .then(data => {
+//             res.json(data);
+//         })
+//         .catch(err => {
+//             res.json(err);
+//         });
+// });
 
 
 // app.post("/api/workouts", ({ body }, res) => {
@@ -75,6 +64,15 @@ app.get("/api/workouts", (_req, res) => {
 // });
 
 
+app.get("/api/workouts/range", (_req, res) => {
+    db.Workout.find({}, (err, data) => {
+        if (err) {
+            console.error(err);
+        } else {
+            res.json(data);
+        }
+    });
+});
 
 app.listen(PORT, () => {
     console.log(`App running on port ${PORT}!`);
