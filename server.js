@@ -20,7 +20,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
     useFindAndModify: false,
     useUnifiedTopology: true
 });
-
+//HTML routes----------------------------------------------
 app.get("/exercise", (req, res) => {
     res.sendFile(path.join(__dirname, "./public/exercise.html"));
 });
@@ -29,7 +29,9 @@ app.get("/stats", (req, res) => {
     res.sendFile(path.join(__dirname, "./public/stats.html"));
 });
 
+//api routes----------------------------------------------------
 
+//getLastWorkout
 app.get("/api/workouts", (_req, res) => {
     db.Workout.find({}, (err, data) => {
         if (err) {
@@ -40,13 +42,12 @@ app.get("/api/workouts", (_req, res) => {
     });
 });
 
+//addExercise
 app.put("/api/workouts/:id", (req, res) => {
-    // Remember: when searching by an id, the id needs to be passed in
-    // as (mongojs.ObjectId(IdYouWantToFind))
-    db.Workout.update({
-        "_id": mongojs.ObjectId(req.params.id)
+    db.Workout.findOneAndUpdate({
+        "_id": req.params.id
     },
-        { $push: { "exercises": req.body } })
+        { $push: { exercises: req.body } })
         .then(data => {
             res.json(data);
         })
@@ -55,17 +56,9 @@ app.put("/api/workouts/:id", (req, res) => {
         });
 });
 
-// app.post("/api/workouts", ({ body }, res) => {
-//     db.Workout.create(body)
-//         .then(data => {
-//             res.json(data);
-//         })
-//         .catch(err => {
-//             res.json(err);
-//         });
-// });
+//createWorkout
 
-
+//getWorkoutsInRange
 app.get("/api/workouts/range", (_req, res) => {
     db.Workout.find({}, (err, data) => {
         if (err) {
