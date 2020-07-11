@@ -3,9 +3,6 @@ let mongoose = require("mongoose");
 let db = require("./ models");
 const path = require("path");
 
-
-
-
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -57,6 +54,16 @@ app.put("/api/workouts/:id", (req, res) => {
 });
 
 //createWorkout
+
+app.post("/api/workouts", (req, res) => {
+    db.Workout.create(req.body)
+        .then(data => {
+            res.json(data);
+        })
+        .catch(err => {
+            res.json(err);
+        })
+});
 
 //getWorkoutsInRange
 app.get("/api/workouts/range", (_req, res) => {
